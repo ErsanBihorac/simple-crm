@@ -18,8 +18,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
-import { AngularFireModule } from '@angular/fire';
 import { environment } from './environments/environment';
+import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 
 @NgModule({
   declarations: [
@@ -43,9 +44,17 @@ import { environment } from './environments/environment';
     MatDatepickerModule,
     MatNativeDateModule,
     FormsModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig),
+    provideFirebaseApp(() => initializeApp({
+      apiKey: "AIzaSyCRClEHnQFLOxNiKYfdKxH3BldEWAUrlq0",
+      authDomain: "simple-crm-9198e.firebaseapp.com",
+      projectId: "simple-crm-9198e",
+      storageBucket: "simple-crm-9198e.appspot.com",
+      messagingSenderId: "680679331565",
+      appId: "1:680679331565:web:0bd456245c67e7ce8f1ee4"
+    })),
+    provideFirestore(() => getFirestore()),
   ],
-  providers: [AngularFirestore],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
