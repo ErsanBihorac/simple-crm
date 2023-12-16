@@ -21,7 +21,6 @@ export class DialogAddUserComponent {
   constructor(public dialogRef: MatDialogRef<DialogAddUserComponent>, private firestore: Firestore) { }
 
   ngOnInit(): void {
-
   }
 
   async saveUser() {
