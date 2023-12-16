@@ -28,10 +28,11 @@ export class UserComponent implements OnInit {
 
   ngOnInit(): void {
     onSnapshot(this.colRef, (snapshot) => {
+      this.allUsers = []; // clear the array, has to be done so that the data doesn't repeat itself
       snapshot.docs.forEach((doc) => {
-        this.allUsers.push({ ...doc.data() })
+        this.allUsers.push({ ...doc.data() }) // take the data on change and paste it into the array allUsers (being displayed in the table)
       })
-      console.log(this.allUsers);
+      console.log(this.allUsers); // log out new the new database
     })
 
     // collection(this.firestore, 'users')
