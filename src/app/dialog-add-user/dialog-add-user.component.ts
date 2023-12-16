@@ -26,7 +26,7 @@ export class DialogAddUserComponent {
 
   async saveUser() {
     this.user.birthDate = this.birthDate.getTime();
-    console.log('current user', this.user);
+    console.log('User added', this.user);
 
     this.loading = true;
     await addDoc(this.myCollection, this.user.toJSON());

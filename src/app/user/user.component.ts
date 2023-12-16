@@ -2,7 +2,7 @@ import { Component, OnInit, inject, } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogAddUserComponent } from '../dialog-add-user/dialog-add-user.component';
 import { User } from 'src/models/user.class';
-import { Firestore, addDoc, collection, getFirestore, } from '@angular/fire/firestore';
+import { Firestore, addDoc, collection, getFirestore, onSnapshot } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
 import { initializeApp } from '@angular/fire/app';
 
@@ -14,11 +14,12 @@ import { initializeApp } from '@angular/fire/app';
 
 export class UserComponent implements OnInit {
   user = new User();
-  allUsers:any = [];
+  allUsers: any = [];
 
   app = initializeApp(environment.firebase);
   db = getFirestore(this.app);
   myCollection = collection(this.db, 'users');
+  colRef = collection(this.db, 'users');
   firestore: Firestore = inject(Firestore);
 
   constructor(public dialog: MatDialog,) {
@@ -26,11 +27,19 @@ export class UserComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    collection(this.firestore, 'users')
-      .valueChanges()
-      .subscribe((changes: any) => {
-        console.log('Received changes from DB', changes)
-      });
+    onSnapshot(this.colRef, (snapshot) => {
+      snapshot.docs.forEach((doc) => {
+        this.allUsers.push({ ...doc.data() })
+      })
+      console.log(this.allUsers);
+    })
+
+    // collection(this.firestore, 'users')
+    //   .valueChanges()
+    //   .subscribe((changes: any) => {
+    //     console.log('Received changes from DB', changes);
+    //     this.allUsers = changes;
+    //   });
   }
 
   openDialog() {
