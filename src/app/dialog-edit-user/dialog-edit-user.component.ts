@@ -28,11 +28,10 @@ export class DialogEditUserComponent implements OnInit {
 
   saveUser() {
     this.loading = true;
-
     //       the reference to the document   the value to update the document
     //                      |                            |
     updateDoc(doc(this.colRef, this.userId), this.user.toJSON());
-
     this.loading = false;
+    this.dialogRef.close();
   }
 }

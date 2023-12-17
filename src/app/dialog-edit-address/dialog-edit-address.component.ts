@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/models/user.class';
 import { MatDialogRef } from '@angular/material/dialog';
-import { Firestore, collection, getFirestore } from '@angular/fire/firestore';
+import { Firestore, collection, doc, getFirestore, updateDoc } from '@angular/fire/firestore';
 import { initializeApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
 
@@ -18,8 +18,7 @@ export class DialogEditAddressComponent implements OnInit {
 
   app = initializeApp(environment.firebase);
   db = getFirestore(this.app);
-  myCollection = collection(this.db, 'users');
-
+  colRef = collection(this.db, 'users');
   constructor(public dialogRef: MatDialogRef<DialogEditAddressComponent>, private firestore: Firestore) { }
 
   ngOnInit(): void {
@@ -27,6 +26,11 @@ export class DialogEditAddressComponent implements OnInit {
   }
 
   saveUser() {
-
+    this.loading = true;
+    //       the reference to the document   the value to update the document
+    //                      |                            |
+    updateDoc(doc(this.colRef, this.userId), this.user.toJSON());
+    this.loading = false;
+    this.dialogRef.close();
   }
 }
