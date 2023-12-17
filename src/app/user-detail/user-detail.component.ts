@@ -4,6 +4,10 @@ import { Firestore, collection, doc, getFirestore, onSnapshot } from '@angular/f
 import { environment } from '../environments/environment';
 import { initializeApp } from '@angular/fire/app';
 import { User } from 'src/models/user.class';
+import { DialogEditAddressComponent } from '../dialog-edit-address/dialog-edit-address.component';
+import { DialogAddUserComponent } from '../dialog-add-user/dialog-add-user.component';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogEditUserComponent } from '../dialog-edit-user/dialog-edit-user.component';
 
 @Component({
   selector: 'app-user-detail',
@@ -20,7 +24,7 @@ export class UserDetailComponent implements OnInit {
   colRef = collection(this.db, 'users');
   firestore: Firestore = inject(Firestore);
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(paramMap => {
@@ -37,5 +41,17 @@ export class UserDetailComponent implements OnInit {
       console.log(this.user);
     }) //Lernhinweis: die ForEach schleife musste weg da es keine mehrere key-werte gab.
     // die daten kann man direkt an das user-json binden und anschließend übergeben!
+  }
+
+  editMenu() {
+    const dialog = this.dialog.open(DialogEditAddressComponent);
+    dialog.componentInstance.user = new User(this.user.toJSON());
+    dialog.componentInstance.userId = this.userId;
+  }
+
+  editUserDetail() {
+    const dialog = this.dialog.open(DialogEditUserComponent);
+    dialog.componentInstance.user = new User(this.user.toJSON());
+    dialog.componentInstance.userId = this.userId;
   }
 }
